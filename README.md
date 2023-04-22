@@ -1,1 +1,1 @@
-# WI-FI_Fixer
+# A simple program for troubleshooting network problems
