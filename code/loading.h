@@ -35,7 +35,6 @@ namespace wififixer {
 				delete components;
 			}
 		}
-
 	private: System::Windows::Forms::ProgressBar^ progressBar1;
 	private: System::Windows::Forms::Label^ label2;
 	private: System::Windows::Forms::Timer^ timer1;
@@ -43,8 +42,8 @@ namespace wififixer {
 	private: System::Windows::Forms::Timer^ timer2;
 	private: int step = 0, step1 = 0;
 	private:    alert^ form1 = gcnew alert();
-				hacking^ form3 = gcnew hacking();
-				blocking^ form4 = gcnew blocking();
+		   hacking^ form3 = gcnew hacking();
+		   blocking^ form4 = gcnew blocking();
 	private: System::Windows::Forms::Label^ procenti;
 	protected:
 
@@ -127,6 +126,7 @@ namespace wififixer {
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"Диагностика сети";
 			this->TopMost = true;
+			this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &loading::loading_FormClosing);
 			this->Load += gcnew System::EventHandler(this, &loading::loading_Load);
 			this->ResumeLayout(false);
 			this->PerformLayout();
@@ -204,5 +204,11 @@ namespace wififixer {
 		this->timer1->Start();
 		this->timer2->Stop();
 	}
-};
+	private: System::Void loading_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
+		if (!right_close) {
+			e->Cancel = true;
+			MessageBox::Show("Пожалуйста не закрывайте программу до завершения диагностики!", "Предупреждение!", MessageBoxButtons::OK, MessageBoxIcon::Error);
+		}
+	}
+	};
 }
