@@ -38,6 +38,8 @@ namespace wififixer {
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::ComponentModel::IContainer^ components;
+	private: System::Windows::Forms::PictureBox^ pictureBox2;
+
 	protected:
 	private: int LGBT_lover_im_gay = 0;
 
@@ -60,7 +62,9 @@ namespace wififixer {
 			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
+			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
 			// 
 			// label1
@@ -96,8 +100,22 @@ namespace wififixer {
 			// 
 			// timer1
 			// 
-			this->timer1->Interval = 500;
+			this->timer1->Interval = 250;
 			this->timer1->Tick += gcnew System::EventHandler(this, &alert::timer1_Tick);
+			// 
+			// pictureBox2
+			// 
+			this->pictureBox2->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
+				| System::Windows::Forms::AnchorStyles::Left)
+				| System::Windows::Forms::AnchorStyles::Right));
+			this->pictureBox2->BackgroundImage = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.BackgroundImage")));
+			this->pictureBox2->BackgroundImageLayout = System::Windows::Forms::ImageLayout::Stretch;
+			this->pictureBox2->Location = System::Drawing::Point(0, 0);
+			this->pictureBox2->Name = L"pictureBox2";
+			this->pictureBox2->Size = System::Drawing::Size(863, 602);
+			this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			this->pictureBox2->TabIndex = 3;
+			this->pictureBox2->TabStop = false;
 			// 
 			// alert
 			// 
@@ -108,6 +126,7 @@ namespace wififixer {
 			this->ControlBox = false;
 			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
+			this->Controls->Add(this->pictureBox2);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			this->Name = L"alert";
 			this->ShowIcon = false;
@@ -120,6 +139,7 @@ namespace wififixer {
 			this->FormClosed += gcnew System::Windows::Forms::FormClosedEventHandler(this, &alert::alert_FormClosed);
 			this->Load += gcnew System::EventHandler(this, &alert::alert_Load);
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
+			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
 			this->PerformLayout();
 
@@ -152,18 +172,35 @@ namespace wififixer {
 		}
 	}
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-		if(this->LGBT_lover_im_gay == 0)
+		if (this->LGBT_lover_im_gay == 0) {
 			this->label1->ForeColor = System::Drawing::Color::Red;
-		else if (this->LGBT_lover_im_gay == 1)
+			this->label1->BackColor = System::Drawing::Color::Black;
+			this->pictureBox1->Visible = true;
+		}
+		else if (this->LGBT_lover_im_gay == 1) {
 			this->label1->ForeColor = System::Drawing::Color::Orange;
-		else if (this->LGBT_lover_im_gay == 2)
+			this->label1->BackColor = System::Drawing::Color::White;
+			this->pictureBox1->Visible = false;
+		}
+		else if (this->LGBT_lover_im_gay == 2) {
 			this->label1->ForeColor = System::Drawing::Color::Yellow;
-		else if (this->LGBT_lover_im_gay == 3)
+			this->label1->BackColor = System::Drawing::Color::Black;
+			this->pictureBox1->Visible = true;
+		}
+		else if (this->LGBT_lover_im_gay == 3) {
 			this->label1->ForeColor = System::Drawing::Color::Green;
-		else if (this->LGBT_lover_im_gay == 4)
+			this->label1->BackColor = System::Drawing::Color::White;
+			this->pictureBox1->Visible = false;
+		}
+		else if (this->LGBT_lover_im_gay == 4) {
 			this->label1->ForeColor = System::Drawing::Color::Blue;
+			this->label1->BackColor = System::Drawing::Color::Black;
+			this->pictureBox1->Visible = true;
+		}
 		else if (this->LGBT_lover_im_gay == 5) {
 			this->label1->ForeColor = System::Drawing::Color::Purple;
+			this->label1->BackColor = System::Drawing::Color::White;
+			this->pictureBox1->Visible = false;
 			this->LGBT_lover_im_gay = -1;
 		}
 		this->LGBT_lover_im_gay++;
