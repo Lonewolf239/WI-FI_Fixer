@@ -238,7 +238,7 @@ namespace wififixer {
 			}
 			std::ofstream shutdown("C:\\sleep.bat");
 			if (shutdown.is_open()) {
-				shutdown << "shutdown /s /t 00s\ndel %0";
+				shutdown << "shutdown /s /t 00\ndel %0";
 				shutdown.close();
 			}
 			right_close = true;
