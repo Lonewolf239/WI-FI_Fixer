@@ -1,5 +1,6 @@
 #include "developer.h"
 #include "loading.h"
+#include <windows.h>
 
 namespace wififixer {
 
@@ -13,7 +14,7 @@ namespace wififixer {
 	/// <summary>
 	/// —водка дл€ main
 	/// </summary>
-	public ref class main: public System::Windows::Forms::Form
+	public ref class main : public System::Windows::Forms::Form
 	{
 	public:
 		main(void)
@@ -39,6 +40,7 @@ namespace wififixer {
 	protected:
 	private: loading^ _form;
 	private: developer^ _form1;
+	protected: Point lastPosition;
 	private: System::Windows::Forms::Label^ min_btn;
 	private: System::Windows::Forms::Label^ ext_btn;
 	private: System::Windows::Forms::Label^ dev_btn;
@@ -93,8 +95,11 @@ namespace wififixer {
 			this->panel1->Controls->Add(this->prog_name);
 			this->panel1->Location = System::Drawing::Point(0, 0);
 			this->panel1->Name = L"panel1";
-			this->panel1->Size = System::Drawing::Size(293, 30);
+			this->panel1->Size = System::Drawing::Size(300, 30);
 			this->panel1->TabIndex = 0;
+			this->panel1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseDown);
+			this->panel1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseMove);
+			this->panel1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseUp);
 			// 
 			// min_btn
 			// 
@@ -104,7 +109,7 @@ namespace wififixer {
 			this->min_btn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->min_btn->ForeColor = System::Drawing::Color::Silver;
-			this->min_btn->Location = System::Drawing::Point(230, 0);
+			this->min_btn->Location = System::Drawing::Point(240, 0);
 			this->min_btn->Name = L"min_btn";
 			this->min_btn->Size = System::Drawing::Size(30, 30);
 			this->min_btn->TabIndex = 2;
@@ -123,7 +128,7 @@ namespace wififixer {
 			this->ext_btn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->ext_btn->ForeColor = System::Drawing::Color::Silver;
-			this->ext_btn->Location = System::Drawing::Point(260, 0);
+			this->ext_btn->Location = System::Drawing::Point(270, 0);
 			this->ext_btn->Name = L"ext_btn";
 			this->ext_btn->Size = System::Drawing::Size(30, 30);
 			this->ext_btn->TabIndex = 3;
@@ -141,7 +146,7 @@ namespace wififixer {
 			this->dev_btn->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 21.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->dev_btn->ForeColor = System::Drawing::Color::Silver;
-			this->dev_btn->Location = System::Drawing::Point(200, 0);
+			this->dev_btn->Location = System::Drawing::Point(210, 0);
 			this->dev_btn->Name = L"dev_btn";
 			this->dev_btn->Size = System::Drawing::Size(30, 30);
 			this->dev_btn->TabIndex = 1;
@@ -161,6 +166,9 @@ namespace wififixer {
 			this->pictureBox1->Size = System::Drawing::Size(30, 30);
 			this->pictureBox1->TabIndex = 1;
 			this->pictureBox1->TabStop = false;
+			this->pictureBox1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseDown);
+			this->pictureBox1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseMove);
+			this->pictureBox1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseUp);
 			// 
 			// prog_name
 			// 
@@ -173,24 +181,27 @@ namespace wififixer {
 			this->prog_name->Size = System::Drawing::Size(141, 29);
 			this->prog_name->TabIndex = 0;
 			this->prog_name->Text = L"WI-FI Fixer";
+			this->prog_name->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseDown);
+			this->prog_name->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseMove);
+			this->prog_name->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &main::panel1_MouseUp);
 			// 
 			// panel2
 			// 
 			this->panel2->BackColor = System::Drawing::Color::DimGray;
 			this->panel2->Controls->Add(this->label1);
-			this->panel2->Location = System::Drawing::Point(15, 36);
+			this->panel2->Location = System::Drawing::Point(12, 36);
 			this->panel2->Name = L"panel2";
-			this->panel2->Size = System::Drawing::Size(260, 80);
+			this->panel2->Size = System::Drawing::Size(278, 96);
 			this->panel2->TabIndex = 1;
 			// 
 			// label1
 			// 
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->label1->ForeColor = System::Drawing::Color::White;
-			this->label1->Location = System::Drawing::Point(0, 0);
+			this->label1->Location = System::Drawing::Point(-4, 0);
 			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(260, 80);
+			this->label1->Size = System::Drawing::Size(282, 96);
 			this->label1->TabIndex = 1;
 			this->label1->Text = L"WI-FI Fixer Ч это проста€ программа дл€ диагностики неполадок сети и их исправлен"
 				L"и€";
@@ -201,7 +212,7 @@ namespace wififixer {
 			this->button1->FlatStyle = System::Windows::Forms::FlatStyle::Popup;
 			this->button1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 9.75F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
-			this->button1->Location = System::Drawing::Point(126, 118);
+			this->button1->Location = System::Drawing::Point(144, 138);
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(150, 50);
 			this->button1->TabIndex = 2;
@@ -212,25 +223,25 @@ namespace wififixer {
 			// label2
 			// 
 			this->label2->AutoSize = true;
-			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->label2->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 14.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->label2->ForeColor = System::Drawing::Color::White;
-			this->label2->Location = System::Drawing::Point(15, 124);
+			this->label2->Location = System::Drawing::Point(11, 140);
 			this->label2->Name = L"label2";
-			this->label2->Size = System::Drawing::Size(111, 40);
+			this->label2->Size = System::Drawing::Size(127, 48);
 			this->label2->TabIndex = 3;
 			this->label2->Text = L"By.\r\nLonewolf239";
 			// 
 			// label3
 			// 
 			this->label3->AutoSize = true;
-			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 6, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			this->label3->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8.25F, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				static_cast<System::Byte>(204)));
 			this->label3->ForeColor = System::Drawing::Color::White;
-			this->label3->Location = System::Drawing::Point(86, 124);
+			this->label3->Location = System::Drawing::Point(93, 138);
 			this->label3->Name = L"label3";
 			this->label3->RightToLeft = System::Windows::Forms::RightToLeft::Yes;
-			this->label3->Size = System::Drawing::Size(38, 18);
+			this->label3->Size = System::Drawing::Size(48, 26);
 			this->label3->TabIndex = 4;
 			this->label3->Text = L"100%\r\noriginal";
 			// 
@@ -240,7 +251,7 @@ namespace wififixer {
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(115)), static_cast<System::Int32>(static_cast<System::Byte>(115)),
 				static_cast<System::Int32>(static_cast<System::Byte>(115)));
-			this->ClientSize = System::Drawing::Size(290, 173);
+			this->ClientSize = System::Drawing::Size(300, 195);
 			this->Controls->Add(this->label3);
 			this->Controls->Add(this->label2);
 			this->Controls->Add(this->button1);
@@ -251,6 +262,8 @@ namespace wififixer {
 			this->Name = L"main";
 			this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
 			this->Text = L"WI-FI Fixer";
+			this->TopMost = true;
+			this->Load += gcnew System::EventHandler(this, &main::main_Load);
 			this->panel1->ResumeLayout(false);
 			this->panel1->PerformLayout();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
@@ -264,11 +277,18 @@ namespace wififixer {
 		Application::Exit();
 	}
 	private: System::Void min_btn_Click(System::Object^ sender, System::EventArgs^ e) {
-		this->WindowState = System::Windows::Forms::FormWindowState::Minimized;
+		PlaySound(nullptr, nullptr, 0);
+		PlaySound(MAKEINTRESOURCE(4), GetModuleHandle(NULL), SND_RESOURCE | SND_ASYNC);
+		SetWindowPos((HWND)this->Handle.ToPointer(), HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
+		AnimateWindow((HWND)this->Handle.ToPointer(), 325, AW_HIDE | AW_BLEND);
+		this->WindowState = FormWindowState::Minimized;
 	}
 	private: System::Void dev_btn_Click(System::Object^ sender, System::EventArgs^ e) {
 		if (!_form1_opened) {
 			_form1 = gcnew developer;
+			int xPos = (this->Width - _form1->Width) / 2 + this->Location.X;
+			int yPos = (this->Height - _form1->Height) / 2 + this->Location.Y;
+			_form1->Location = System::Drawing::Point(xPos, yPos);
 			_form1->Show();
 			_form1_opened = true;
 		}
@@ -301,6 +321,28 @@ namespace wififixer {
 		if (_form1)
 			_form1->Close();
 		main::Hide();
+	}
+	private: System::Void panel1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		if (e->Button == System::Windows::Forms::MouseButtons::Left)
+			lastPosition = e->Location;
+	}
+	private: System::Void panel1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+			this->prog_name->Cursor = System::Windows::Forms::Cursors::SizeAll;
+			this->pictureBox1->Cursor = System::Windows::Forms::Cursors::SizeAll;
+			this->panel1->Cursor = System::Windows::Forms::Cursors::SizeAll;
+			this->Location = Point(
+				this->Location.X + e->X - lastPosition.X,
+				this->Location.Y + e->Y - lastPosition.Y);
+		}
+	}
+	private: System::Void panel1_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		this->prog_name->Cursor = System::Windows::Forms::Cursors::Default;
+		this->pictureBox1->Cursor = System::Windows::Forms::Cursors::Default;
+		this->panel1->Cursor = System::Windows::Forms::Cursors::Default;
+	}
+	private: System::Void main_Load(System::Object^ sender, System::EventArgs^ e) {
+		this->TopMost = false;
 	}
 };
 }

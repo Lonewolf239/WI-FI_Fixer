@@ -42,8 +42,8 @@ namespace wififixer {
 	private: System::Windows::Forms::Timer^ timer2;
 	private: int step = 0, step1 = 0;
 	private:    alert^ form1 = gcnew alert();
-		   hacking^ form3 = gcnew hacking();
-		   blocking^ form4 = gcnew blocking();
+				hacking^ form3 = gcnew hacking();
+				blocking^ form4 = gcnew blocking();
 	private: System::Windows::Forms::Label^ procenti;
 	protected:
 
@@ -74,6 +74,7 @@ namespace wififixer {
 			this->progressBar1->Location = System::Drawing::Point(12, 20);
 			this->progressBar1->Name = L"progressBar1";
 			this->progressBar1->Size = System::Drawing::Size(336, 36);
+			this->progressBar1->Step = 1;
 			this->progressBar1->Style = System::Windows::Forms::ProgressBarStyle::Continuous;
 			this->progressBar1->TabIndex = 1;
 			// 

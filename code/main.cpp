@@ -1,4 +1,4 @@
-#include "main.h"
+#include "loading_screen.h"
 
 using namespace System;
 using namespace System::Windows::Forms;
@@ -12,7 +12,7 @@ int main() {
     count = countFiles();
 	Application::SetCompatibleTextRenderingDefault(false);
 	Application::EnableVisualStyles();
-	wififixer::main form;
+	wififixer::loading_screen form;
 	Application::Run(% form);
 	return 0;
 }

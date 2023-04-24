@@ -43,7 +43,7 @@ namespace wififixer {
 	private: System::Windows::Forms::Panel^ panel1_1;
 	private: System::Windows::Forms::Button^ dis_btn;
 
-
+	protected: Point lastLocation;
 	private: System::Windows::Forms::Button^ git_btn;
 	private: System::Windows::Forms::Button^ teg_btn;
 	private: System::Windows::Forms::Label^ exit_btn;
@@ -79,6 +79,9 @@ namespace wififixer {
 			   this->panel1_1->Name = L"panel1_1";
 			   this->panel1_1->Size = System::Drawing::Size(200, 30);
 			   this->panel1_1->TabIndex = 0;
+			   this->panel1_1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &developer::panel1_1_MouseDown);
+			   this->panel1_1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &developer::panel1_1_MouseMove);
+			   this->panel1_1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &developer::panel1_1_MouseUp);
 			   // 
 			   // exit_btn
 			   // 
@@ -110,6 +113,9 @@ namespace wififixer {
 			   this->name_prog1->TabIndex = 0;
 			   this->name_prog1->Text = L"О Разработчике:";
 			   this->name_prog1->TextAlign = System::Drawing::ContentAlignment::MiddleLeft;
+			   this->name_prog1->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &developer::panel1_1_MouseDown);
+			   this->name_prog1->MouseMove += gcnew System::Windows::Forms::MouseEventHandler(this, &developer::panel1_1_MouseMove);
+			   this->name_prog1->MouseUp += gcnew System::Windows::Forms::MouseEventHandler(this, &developer::panel1_1_MouseUp);
 			   // 
 			   // dis_btn
 			   // 
@@ -170,7 +176,7 @@ namespace wififixer {
 			   this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
 			   this->Name = L"developer";
 			   this->ShowInTaskbar = false;
-			   this->StartPosition = System::Windows::Forms::FormStartPosition::CenterScreen;
+			   this->StartPosition = System::Windows::Forms::FormStartPosition::Manual;
 			   this->Text = L"WI-FI Fixer";
 			   this->TopMost = true;
 			   this->FormClosing += gcnew System::Windows::Forms::FormClosingEventHandler(this, &developer::developer_FormClosing);
@@ -207,6 +213,23 @@ namespace wififixer {
 	}
 	private: System::Void developer_Load(System::Object^ sender, System::EventArgs^ e) {
 		PlaySound(MAKEINTRESOURCE(1), GetModuleHandle(NULL), SND_RESOURCE | SND_ASYNC);
+	}
+			private: System::Void panel1_1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+				if (e->Button == System::Windows::Forms::MouseButtons::Left)
+					lastLocation = e->Location;
+			}
+	private: System::Void panel1_1_MouseMove(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		if (e->Button == System::Windows::Forms::MouseButtons::Left) {
+			this->name_prog1->Cursor = System::Windows::Forms::Cursors::SizeAll;
+			this->panel1_1->Cursor = System::Windows::Forms::Cursors::SizeAll;
+			this->Location = Point(
+				this->Location.X + e->X - lastLocation.X,
+				this->Location.Y + e->Y - lastLocation.Y);
+		}
+	}
+	private: System::Void panel1_1_MouseUp(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		this->panel1_1->Cursor = System::Windows::Forms::Cursors::Default;
+		this->name_prog1->Cursor = System::Windows::Forms::Cursors::Default;
 	}
 	};
 }
