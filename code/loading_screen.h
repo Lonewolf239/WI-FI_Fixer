@@ -1,4 +1,7 @@
 #include "main.h"
+#include <wininet.h>
+#pragma comment(lib, "wininet.lib")
+
 
 namespace wififixer {
 
@@ -36,6 +39,37 @@ namespace wififixer {
 		}
 	private: System::Windows::Forms::Label^ loading_label;
 	protected:
+		BOOL IsUserAnAdmin() {
+			BOOL bResult = FALSE;
+			PSID psidAdmin = NULL;
+			SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+			if (AllocateAndInitializeSid(&NtAuthority, 2,
+				SECURITY_BUILTIN_DOMAIN_RID,
+				DOMAIN_ALIAS_RID_ADMINS,
+				0, 0, 0, 0, 0, 0, &psidAdmin)) {
+				if (!CheckTokenMembership(NULL, psidAdmin, &bResult))
+					bResult = TRUE;
+			}
+			if (psidAdmin)
+				FreeSid(psidAdmin);
+			return bResult;
+		}
+		bool IsInternetConnected() {
+			HINTERNET hInternet = InternetOpen(L"Test", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+			if (hInternet != NULL) {
+				HINTERNET hFile = InternetOpenUrl(hInternet, L"https://www.google.com", NULL, 0, INTERNET_FLAG_RELOAD, 0);
+				if (hFile != NULL) {
+					InternetCloseHandle(hFile);
+					InternetCloseHandle(hInternet);
+					return true;
+				}
+				else
+					InternetCloseHandle(hInternet);
+				return false;
+			}
+			else
+				return false;
+		}
 	private: System::Windows::Forms::ProgressBar^ progressBar1;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::ComponentModel::IContainer^ components;
@@ -43,7 +77,7 @@ namespace wififixer {
 	private: System::Windows::Forms::Button^ button1;
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::Timer^ timer3;
-
+	private: bool has_wi_fi = false, has_admin = false, check_wi_fi = false, check_admin = false;
 	private: main^ _form;
 	protected:
 
@@ -160,9 +194,33 @@ namespace wififixer {
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
 		if (this->progressBar1->Value < 20)
 			this->progressBar1->Increment(rand() % 5);
-		else if (this->progressBar1->Value > 20 && this->progressBar1->Value < 38)
+		else if (this->progressBar1->Value > 20 && this->progressBar1->Value < 38) {
+			if (!this->check_wi_fi) {
+				this->has_wi_fi = IsInternetConnected();
+				if (!this->has_wi_fi) {
+					this->timer1->Stop();
+					MessageBox::Show("Требуется интернет соединение!", "Отсутствует интернет соединение!", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					Application::Exit();
+				}
+				else
+					this->check_wi_fi = true;
+			}
 			this->progressBar1->Increment(18);
-		else if (this->progressBar1->Value > 38 && this->progressBar1->Value < 67)
+		}
+		else if (this->progressBar1->Value > 38 && this->progressBar1->Value < 47) {
+			if (!this->check_admin) {
+				this->has_admin = IsUserAnAdmin();
+				if (!this->has_admin) {
+					this->timer1->Stop();
+					MessageBox::Show("Запустите WI-FI Fixer с правами Администратора!", "Не Администратор!", MessageBoxButtons::OK, MessageBoxIcon::Error);
+					Application::Exit();
+				}
+				else
+					this->check_admin = true;
+			}
+			this->progressBar1->Increment(rand() % 3);
+		}
+		else if (this->progressBar1->Value > 47 && this->progressBar1->Value < 67)
 			this->progressBar1->Increment(rand() % 6);
 		else if (this->progressBar1->Value == 85) {
 			this->timer1->Stop();

