@@ -216,6 +216,7 @@ namespace wififixer {
 			this->button1->Name = L"button1";
 			this->button1->Size = System::Drawing::Size(150, 50);
 			this->button1->TabIndex = 2;
+			this->button1->TabStop = false;
 			this->button1->Text = L"Запустить \r\nдиагностику сети";
 			this->button1->UseVisualStyleBackColor = false;
 			this->button1->Click += gcnew System::EventHandler(this, &main::button1_Click);
