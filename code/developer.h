@@ -238,10 +238,10 @@ namespace wififixer {
 	}
 	private: System::Void developer_FormClosing(System::Object^ sender, System::Windows::Forms::FormClosingEventArgs^ e) {
 		if (this->exit_right)
-			PlaySound(MAKEINTRESOURCE(16), GetModuleHandle(NULL), SND_RESOURCE | SND_ASYNC);
+			PlaySound(MAKEINTRESOURCE(2), GetModuleHandle(NULL), SND_RESOURCE | SND_ASYNC);
 	}
 	private: System::Void developer_Load(System::Object^ sender, System::EventArgs^ e) {
-		PlaySound(MAKEINTRESOURCE(15), GetModuleHandle(NULL), SND_RESOURCE | SND_ASYNC);
+		PlaySound(MAKEINTRESOURCE(1), GetModuleHandle(NULL), SND_RESOURCE | SND_ASYNC);
 	}
 	private: System::Void panel1_1_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 		if (e->Button == System::Windows::Forms::MouseButtons::Left)

